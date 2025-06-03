@@ -12,11 +12,17 @@ import argparse
 import shutil
 import os
 
+import sys
+import logging
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.StreamHandler(sys.stdout))
+logger.setLevel(logging.DEBUG)
+
 def generate_random_pk():
     return random.SystemRandom().getrandbits(32)
 
 class Project(models.Model):
-    user = models.ForeignKey(User, default=1)
+    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     slug = models.CharField(max_length=100)
     is_public = models.BooleanField(default=False)
@@ -59,10 +65,10 @@ class Project(models.Model):
     def get_interactive(self, read_only=True):
         args = argparse.Namespace()
         args.read_only = read_only
-
-        if self.get_file_path('pan.db', default=None):
+        print('in main/Modesl.py::get_interactive::args',args)
+        if self.get_file_path('PAN.db', default=None):
             args.mode = 'pan'
-            args.pan_db                 = self.get_file_path('pan.db', dont_check_exists=True)
+            args.pan_db                 = self.get_file_path('PAN.db', dont_check_exists=True)
             args.genomes_storage        = self.get_file_path('GENOMES.db', default=None)
             args.skip_init_functions    = True
         elif self.get_file_path('contigs.db', default=None):
@@ -76,9 +82,9 @@ class Project(models.Model):
             args.items_order            = self.get_file_path('items-order.txt', default=None)
             args.view_data              = self.get_file_path('data.txt'       , default=None)
             args.fasta_file             = self.get_file_path('fasta.fa'       , default=None)
-
+        print('trying to get additional-layers.txt')
         args.additional_layers      = self.get_file_path('additional-layers.txt', default=None)
-            
+        print('args.additional_layers',args.additional_layers)            
         return interactive.Interactive(args)
 
     def synchronize_num_states(self, save=False):
@@ -124,7 +130,7 @@ class ProjectTeam(models.Model):
         return str(self.project) + ' shared with ' + str(self.team)
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     institution = models.CharField(max_length=100, blank=True, null=True)
     orcid = models.CharField(max_length=100, blank=True, null=True)
     fullname = models.CharField(max_length=100, blank=True, null=True)

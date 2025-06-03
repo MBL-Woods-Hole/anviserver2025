@@ -34,6 +34,7 @@ def list_projects(request):
     context = {
         'projects': Project.objects.filter(user=request.user),
     }
+    print('list context',Project.objects)
     return render(request, 'projects/list.html', context)
 
 @login_required
@@ -121,6 +122,7 @@ def share_project(request, project_slug):
 
 @login_required
 def new_project(request):
+    print(request.FILES)
     if request.method == "POST":
         try:
             name = request.POST.get('name')
@@ -136,7 +138,7 @@ def new_project(request):
                     project[0].delete()
                 else:
                     raise Exception("Project with same name already exists, please give another name.")
-
+            print('0')
             project = Project(name=name,
                               slug=slug,
                               user=request.user,
@@ -148,28 +150,33 @@ def new_project(request):
                          'samples-order.txt', 'samples-info.txt',
                          'additional-layers.txt', 'state.json', 
                          'bins.txt', 'bins-info.txt', 'items-order.txt']
-
+            print('1')
             for fileType in fileTypes:
                 if fileType in request.FILES:
+                    print('found ft',fileType)
+                    print('p path',project.get_path())
                     put_project_file(project.get_path(), fileType, request.FILES[fileType])
-
+            print('1a')
             interactive = project.get_interactive()
             profile_db_path = project.get_file_path('profile.db', default=None)
 
+            print('2')
             samples_info = project.get_file_path('samples-info.txt', default=None)
             if samples_info:
                 miscdata.MiscDataTableFactory(argparse.Namespace(target_data_table='layers', profile_db=profile_db_path)).populate_from_file(samples_info)
+            print('3')
 
             samples_order = project.get_file_path('samples-order.txt', default=None)
+            #print('samp-order-file-path',sample_order)
             if samples_order:
                 miscdata.MiscDataTableFactory(argparse.Namespace(target_data_table='layer_orders', profile_db=profile_db_path)).populate_from_file(samples_order)
 
-
+            print('4')
             state_file = project.get_file_path('state.json', default=None)
             if state_file:
                 interactive.states_table.store_state('default', open(state_file, 'r').read(), datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S"))
                 project.num_states = 1
-
+            print('5')
             bins_file = project.get_file_path('bins.txt', default=None)
             bins_info_file = project.get_file_path('bins-info.txt', default=None)
             if bins_file and bins_info_file:
@@ -190,12 +197,14 @@ def new_project(request):
                 project.num_collections = 1
 
             # try to get number of leaves
+            print('6')
             try:
                 project.num_leaves = len(interactive.displayed_item_names_ordered)
             except:
                 project.num_leaves = 0
 
             # try to get number of layers
+            print('7')
             try:
                 project.num_layers = len(interactive.views['single'][0]) - 1 # <- -1 because first column is contigs
             except:
@@ -222,5 +231,5 @@ def new_project(request):
                     'status': 1,
                     'message': message
                     })
-
+    print('done with new project -returning')
     return render(request, 'projects/new.html')

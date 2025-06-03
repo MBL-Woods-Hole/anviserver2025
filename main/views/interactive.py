@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.urls import reverse
+#from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404, JsonResponse, HttpResponse
 
@@ -27,7 +28,7 @@ def short_link_redirect(request, short_link_key):
 
 
 def show_interactive(request, username, project_slug):
-    project = get_project(username, project_slug)
+    project = get_project(username, project_slug.lower())
 
     view_key = request.GET.get('view_key')
     if view_key is None:
@@ -39,7 +40,7 @@ def show_interactive(request, username, project_slug):
     return render(request, 'interactive.html', {'project': project, 'view_key': view_key})
 
 def show_inspect(request, username, project_slug, inspection_type):
-    project = get_project(username, project_slug)
+    project = get_project(username, project_slug.lower())
 
     view_key = request.GET.get('view_key')
     if view_key is None:
@@ -61,7 +62,7 @@ def show_inspect(request, username, project_slug, inspection_type):
                                            })
 
 def download_zip(request, username, project_slug):
-    project = get_project(username, project_slug)
+    project = get_project(username, project_slug.lower())
 
     view_key = request.GET.get('view_key')
     if view_key is None:
@@ -82,10 +83,11 @@ def download_zip(request, username, project_slug):
 
 
 def ajax_handler(request, username, project_slug, view_key, requested_url):
-    if not request.is_ajax():
-        raise Http404
+    print('in ajax',request.is_ajax(),requested_url)
+    #if not request.is_ajax():
+    #    raise Http404
 
-    project = get_project(username, project_slug)
+    project = get_project(username, project_slug.lower())
 
     if not check_view_permission(project, request.user, view_key):
         raise Http404
@@ -94,24 +96,26 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
 
     bottle_request = utils.MockBottleRequest(django_request=request)
     bottle_response = utils.MockBottleResponse()
-
+    print('req url',requested_url)
     interactive = None
     
     if not requested_url.startswith('data/news'):
         interactive = project.get_interactive(read_only=read_only)
-
+    print('inter',interactive)
+    print('url1',requested_url)
     bottleapp = BottleApplication(interactive, bottle_request, bottle_response)
 
     if requested_url.startswith('data/init'):
+        print('url2',requested_url)
         download_zip_url = reverse('download_zip', args=[username, project_slug])
         if view_key != 'no_view_key':
             download_zip_url += '?view_key=' + view_key
-
+        print('1')
         default_view = interactive.default_view
         default_order = interactive.p_meta['default_item_order']
         autodraw = False
         state_dict = None
-
+        print('2')
         if interactive.state_autoload:
             state_dict = json.loads(interactive.states_table.states[interactive.state_autoload]['content'])
 
@@ -126,21 +130,51 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
         collection_dict = None
         if interactive.collection_autoload:
             collection_dict = json.loads(bottleapp.get_collection_dict(interactive.collection_autoload))
-
+        print('3')
+        print('mode',interactive.mode)
         functions_sources = []
         if interactive.mode == 'full' or interactive.mode == 'gene':
             functions_sources = list(interactive.gene_function_call_sources)
         elif interactive.mode == 'pan':
             functions_sources = list(interactive.gene_clusters_function_sources)
-
-        return JsonResponse({ "title": project.name,
+ #       obj_orig ={"title": project.name,
+ #                            "description": interactive.p_meta['description'],
+ #                            "item_orders": (default_order, interactive.p_meta['item_orders'][default_order], list(interactive.p_meta['item_orders'].keys())),
+ #                            "views": (default_view, interactive.views[default_view], list(interactive.views.keys())),
+ #                            "item_lengths": dict([tuple((c, interactive.splits_basic_info[c]['length']),) for c in interactive.splits_basic_info]),
+ #                            "server_mode": True,
+ #                            "mode": interactive.mode,
+ #                            "read_only": interactive.read_only,
+ #                            "bin_prefix": "Bin_",
+ #                            "session_id": 0,
+ #                            "layers_order": interactive.layers_order_data_dict,
+ #                            "layers_information": interactive.layers_additional_data_dict,
+ #                            "layers_information_default_order": interactive.layers_additional_data_keys,
+ #                            "check_background_process": False,
+ #                            "autodraw": autodraw,
+ #                            "inspection_available": interactive.auxiliary_profile_data_available,
+ #                            "sequences_available": True if interactive.split_sequences else False,
+ #                            "functions_initialized": interactive.gene_function_calls_initiated,
+ #                            "functions_sources": functions_sources,
+ #                            "state": (interactive.state_autoload, state_dict),
+ #                            "collection": collection_dict,
+ #                            "samples": interactive.p_meta['samples'] if interactive.mode in ['full', 'refine'] else [],
+ #                            "load_full_state": True,
+ #                            "project": {
+ #                               'username': project.user.username,
+ #                               'fullname': project.user.userprofile.fullname if project.user.userprofile.fullname else project.user.username,
+ #                               'user_avatar': gravatar(project.user.email),
+ #                               'download_zip_url': download_zip_url
+ #                             }
+ #                  }
+        obj_inuse ={"title": project.name,
                              "description": interactive.p_meta['description'],
                              "item_orders": (default_order, interactive.p_meta['item_orders'][default_order], list(interactive.p_meta['item_orders'].keys())),
                              "views": (default_view, interactive.views[default_view], list(interactive.views.keys())),
                              "item_lengths": dict([tuple((c, interactive.splits_basic_info[c]['length']),) for c in interactive.splits_basic_info]),
                              "server_mode": True,
                              "mode": interactive.mode,
-                             "read_only": interactive.read_only, 
+                             "read_only": True,   #interactive.read_only,
                              "bin_prefix": "Bin_",
                              "session_id": 0,
                              "layers_order": interactive.layers_order_data_dict,
@@ -161,8 +195,11 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
                                 'fullname': project.user.userprofile.fullname if project.user.userprofile.fullname else project.user.username,
                                 'user_avatar': gravatar(project.user.email),
                                 'download_zip_url': download_zip_url
-                                }
-                            })
+                              }
+                   }
+#        print('obj_inuse',obj_inuse)
+#        print('returning')
+        return JsonResponse(obj_inuse)
 
     elif requested_url.startswith('data/view/'):
         param = requested_url.split('/')[-1]
@@ -186,7 +223,23 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
         ret = HttpResponse(bottleapp.store_collections_dict(), content_type='application/json')
         project.synchronize_num_collections(save=True)
         return ret
-
+########### ADDED ###########################################
+    elif requested_url.endswith('data/search_functions'):
+        #logger.debug('got search fxn')
+        return HttpResponse(bottleapp.search_functions(), content_type='application/json')
+    elif requested_url.endswith('data/news'):
+        #logger.debug('got news fxn')
+        return HttpResponse(bottleapp.get_news(), content_type='application/json')
+    elif requested_url.endswith('data/check_homogeneity_info'):
+        #logger.debug('got check_homogeneity_info fxn')
+        return HttpResponse(bottleapp.check_homogeneity_info(), content_type='application/json')
+    elif requested_url.endswith('data/filter_gene_clusters'):
+        #logger.debug('got filter_gene_clusters fxn')
+        return HttpResponse(bottleapp.filter_gene_clusters(), content_type='application/json')
+    elif requested_url.endswith('data/save_tree'):
+        #logger.debug('got filter_gene_clusters fxn')
+        return HttpResponse(bottleapp.save_tree(), content_type='application/json')
+###############################################################    
     elif requested_url.startswith('data/contig/'):
         param = requested_url.split('/')[-1]
         return HttpResponse(bottleapp.get_sequence_for_split(param), content_type='application/json')

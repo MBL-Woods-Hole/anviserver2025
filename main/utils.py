@@ -14,7 +14,7 @@ def check_view_permission(project, user, view_key):
     if ProjectLink.objects.filter(project=project, link=view_key):
         return True
 
-    if not user.is_anonymous():
+    if not user.is_anonymous:
         project_teams = set(Team.objects.filter(projectteam__project=project).values_list('id', flat=True))
         user_teams = set(Team.objects.filter(teamuser__user=user).values_list('id', flat=True))
 
@@ -25,7 +25,7 @@ def check_view_permission(project, user, view_key):
 
 
 def check_write_permission(project, user):
-    if user.is_anonymous():
+    if user.is_anonymous:
         return False
 
     if project.user == user:

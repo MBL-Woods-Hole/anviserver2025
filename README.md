@@ -1,3 +1,13 @@
+# This is a custom mash of the original code from Meren and Ozcan. See the repo below.
+## Use it if you find it useful!
+
+This works for HOMD (https://homd.org) to open and display pangenomes only from a single public user. 
+It runs in a conda environment as described below but I needed to update/change the python Django code
+to make it run.
+
+
+
+# Below is the original install text::
 # Installing anvi'o and anvi'server
 
 The instructions below are to setup **both anvi'o and anvi'server codebase on the same computer**. This is necessary since anvi'server uses anvi'o modules to display things.
