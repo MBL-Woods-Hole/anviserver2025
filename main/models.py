@@ -65,7 +65,7 @@ class Project(models.Model):
     def get_interactive(self, read_only=True):
         args = argparse.Namespace()
         args.read_only = read_only
-        print('in main/Modesl.py::get_interactive::args',args)
+        #print('in main/Modesl.py::get_interactive::args',args)
         if self.get_file_path('PAN.db', default=None):
             args.mode = 'pan'
             args.pan_db                 = self.get_file_path('PAN.db', dont_check_exists=True)
@@ -82,9 +82,9 @@ class Project(models.Model):
             args.items_order            = self.get_file_path('items-order.txt', default=None)
             args.view_data              = self.get_file_path('data.txt'       , default=None)
             args.fasta_file             = self.get_file_path('fasta.fa'       , default=None)
-        print('trying to get additional-layers.txt')
+        #print('trying to get additional-layers.txt')
         args.additional_layers      = self.get_file_path('additional-layers.txt', default=None)
-        print('args.additional_layers',args.additional_layers)            
+        #print('args.additional_layers',args.additional_layers)            
         return interactive.Interactive(args)
 
     def synchronize_num_states(self, save=False):
