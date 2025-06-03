@@ -1,5 +1,5 @@
 # This is a custom mash of the original code from Meren and Ozcan. See the repo below.
-## Use it if you find it useful!
+### Use it if you find it useful!
 
 This works for HOMD (https://homd.org) to open and display pangenomes only from a single public user. 
 It runs in a conda environment as described below but I needed to update/change the python Django code
