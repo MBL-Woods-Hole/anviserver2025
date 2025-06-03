@@ -189,18 +189,18 @@ function generate_inspect_link(options) {
 
     let url = window.location.href.split('?')[0];
     let new_url = "";
-    console.log('Orig HREF',window.location.href) 
+    //console.log('Orig HREF',window.location.href) 
 
-    console.log('Original URL',url)
-    console.log('Type',type)
-    console.log('item_name',item_name)
+    //console.log('Original URL',url)
+    //console.log('Type',type)
+    //console.log('item_name',item_name)
     const url2 = new URL(url);
-    console.log('url2',url2)
+    //console.log('url2',url2)
     let url_base = url.split()
     
     let req_prefix = window.location.href.split('=')[1];
     let req_base = url2.protocol+'//'+url2.hostname
-    console.log('req_base',req_base)
+    //console.log('req_base',req_base)
     pangenome = req_prefix.split('/')[3]
     new_url_base = req_base+'/guest/'+pangenome
     if (self == top) {
@@ -238,7 +238,7 @@ function generate_inspect_link(options) {
     {
         req_prefix.split('/')[2]
         // anvi server
-        console.log('host name u2',url2.hostname)
+        //console.log('host name u2',url2.hostname)
         if (url.endsWith('/inspect') || url.endsWith('/geneclusters')) {
             // on charts or gene cluster page
             new_url = url;
@@ -261,9 +261,9 @@ function generate_inspect_link(options) {
     {
         new_url = new_url + '&show_snvs=' + show_snvs;
     }
-    console.log('New URL-before',new_url)
+    //console.log('New URL-before',new_url)
     new_url = new_url_base +'/geneclusters.html?id=' + item_name
-    console.log('New URL-after',new_url)
+    //console.log('New URL-after',new_url)
     return new_url;
 }
 

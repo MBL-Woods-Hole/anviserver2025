@@ -96,26 +96,26 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
 
     bottle_request = utils.MockBottleRequest(django_request=request)
     bottle_response = utils.MockBottleResponse()
-    print('req url',requested_url)
+    #print('req url',requested_url)
     interactive = None
     
     if not requested_url.startswith('data/news'):
         interactive = project.get_interactive(read_only=read_only)
-    print('inter',interactive)
-    print('url1',requested_url)
+    #print('inter',interactive)
+    #print('url1',requested_url)
     bottleapp = BottleApplication(interactive, bottle_request, bottle_response)
 
     if requested_url.startswith('data/init'):
-        print('url2',requested_url)
+        #print('url2',requested_url)
         download_zip_url = reverse('download_zip', args=[username, project_slug])
         if view_key != 'no_view_key':
             download_zip_url += '?view_key=' + view_key
-        print('1')
+        #print('1')
         default_view = interactive.default_view
         default_order = interactive.p_meta['default_item_order']
         autodraw = False
         state_dict = None
-        print('2')
+        #print('2')
         if interactive.state_autoload:
             state_dict = json.loads(interactive.states_table.states[interactive.state_autoload]['content'])
 
@@ -130,8 +130,8 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
         collection_dict = None
         if interactive.collection_autoload:
             collection_dict = json.loads(bottleapp.get_collection_dict(interactive.collection_autoload))
-        print('3')
-        print('mode',interactive.mode)
+        #print('3')
+        #print('mode',interactive.mode)
         functions_sources = []
         if interactive.mode == 'full' or interactive.mode == 'gene':
             functions_sources = list(interactive.gene_function_call_sources)
@@ -174,7 +174,7 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
                              "item_lengths": dict([tuple((c, interactive.splits_basic_info[c]['length']),) for c in interactive.splits_basic_info]),
                              "server_mode": True,
                              "mode": interactive.mode,
-                             "read_only": True,   #interactive.read_only,
+                             "read_only": True,   #Change from: interactive.read_only,
                              "bin_prefix": "Bin_",
                              "session_id": 0,
                              "layers_order": interactive.layers_order_data_dict,
