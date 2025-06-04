@@ -204,13 +204,13 @@ $(document).ready(function() {
 });
 
 function initData() {
-    console.log('HERE in /home/ubuntu/miniconda3/envs/anvio-8/lib/python3.10/site-packages/anvio/data/interactive/')
+    //console.log('HERE in /home/ubuntu/miniconda3/envs/anvio-8/lib/python3.10/site-packages/anvio/data/interactive/')
     $.ajax({
         type: 'GET',
         cache: false,
         url: '/data/init',
         success: function(response) {
-            console.log('response',response)
+            //console.log('response',response)
             ANVIO_VERSION = response.version;
             mode = response.mode;
             server_mode = response.server_mode;
@@ -362,7 +362,7 @@ function switchUserInterfaceMode(project, title) {
     // hide all mode dependent divs:
     $('.full-mode, .pan-mode, .collection-mode, .manual-mode, .server-mode, .refine-mode').hide();
 
-    console.log("The running mode for the interface: " + mode);
+    //console.log("The running mode for the interface: " + mode);
 
     $('.' + mode + '-mode').show();
     $('.nav-tabs').css('background-image', 'url(images/' + mode + '-bg.png)');
