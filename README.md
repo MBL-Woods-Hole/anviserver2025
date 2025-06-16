@@ -162,6 +162,10 @@ Finally, restart the gunicorn
 ```
 killall gunicorn && gunicorn -c gunicorn.conf.py anviserver.wsgi:application --daemon
 ```
+# Files that need editing on ** Anvi`o version8 **
+anvio/summaryhtml.py
+anvio/data/interactive/js/utils.js
+anvio/data/interactive/index.html
 
 # License
 
