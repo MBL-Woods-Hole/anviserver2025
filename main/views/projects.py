@@ -142,7 +142,9 @@ def new_project(request):
             project = Project(name=name,
                               slug=slug,
                               user=request.user,
-                              secret=get_random_string(length=32))
+                              #secret=get_random_string(length=32)
+                              secret=name
+                              )
 
             project.create_project_path()
 

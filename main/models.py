@@ -40,7 +40,8 @@ class Project(models.Model):
         return 'Project ' + str(self.name) + ' (Created By: ' + str(self.user) + ')'
 
     def get_path(self):
-        return os.path.join(settings.USER_DATA_DIR, self.user.username, self.secret)
+        #return os.path.join(settings.USER_DATA_DIR, self.user.username, self.secret)
+        return os.path.join(settings.USER_DATA_DIR, self.user.username, self.name)
 
     def get_file_path(self, filename, default=None, dont_check_exists=False):
         full_path = os.path.join(self.get_path(), filename)
