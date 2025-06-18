@@ -70,7 +70,7 @@ class Project(models.Model):
             args.mode = 'pan'
             args.pan_db                 = self.get_file_path('PAN.db', dont_check_exists=True)
             args.genomes_storage        = self.get_file_path('GENOMES.db', default=None)
-            args.skip_init_functions    = True
+            args.skip_init_functions    = False
         elif self.get_file_path('contigs.db', default=None):
             args.hide_outlier_SNVs = False
             args.profile_db             = self.get_file_path('profile.db', dont_check_exists=True)
