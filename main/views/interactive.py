@@ -168,8 +168,8 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
  #                             }
  #                  }
         obj_inuse ={"title": project.name,
-                             "description": interactive.p_meta['description'],
-                             "item_orders": (default_order, interactive.p_meta['item_orders'][default_order], list(interactive.p_meta['item_orders'].keys())),
+                    "description": interactive.p_meta['description'],
+                    "item_orders": (default_order, interactive.p_meta['item_orders'][default_order], list(interactive.p_meta['item_orders'].keys())),
                              "views": (default_view, interactive.views[default_view], list(interactive.views.keys())),
                              "item_lengths": dict([tuple((c, interactive.splits_basic_info[c]['length']),) for c in interactive.splits_basic_info]),
                              "server_mode": True,
@@ -224,21 +224,21 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
         project.synchronize_num_collections(save=True)
         return ret
 ########### ADDED ###########################################
-    elif requested_url.endswith('data/search_functions'):
-        #logger.debug('got search fxn')
-        return HttpResponse(bottleapp.search_functions(), content_type='application/json')
-    elif requested_url.endswith('data/news'):
-        #logger.debug('got news fxn')
-        return HttpResponse(bottleapp.get_news(), content_type='application/json')
-    elif requested_url.endswith('data/check_homogeneity_info'):
-        #logger.debug('got check_homogeneity_info fxn')
-        return HttpResponse(bottleapp.check_homogeneity_info(), content_type='application/json')
-    elif requested_url.endswith('data/filter_gene_clusters'):
-        #logger.debug('got filter_gene_clusters fxn')
-        return HttpResponse(bottleapp.filter_gene_clusters(), content_type='application/json')
-    elif requested_url.endswith('data/save_tree'):
-        #logger.debug('got filter_gene_clusters fxn')
-        return HttpResponse(bottleapp.save_tree(), content_type='application/json')
+#     elif requested_url.endswith('data/search_functions'):
+#         #logger.debug('got search fxn')
+#         return HttpResponse(bottleapp.search_functions(), content_type='application/json')
+#     elif requested_url.endswith('data/news'):
+#         #logger.debug('got news fxn')
+#         return HttpResponse(bottleapp.get_news(), content_type='application/json')
+#     elif requested_url.endswith('data/check_homogeneity_info'):
+#         #logger.debug('got check_homogeneity_info fxn')
+#         return HttpResponse(bottleapp.check_homogeneity_info(), content_type='application/json')
+#     elif requested_url.endswith('data/filter_gene_clusters'):
+#         #logger.debug('got filter_gene_clusters fxn')
+#         return HttpResponse(bottleapp.filter_gene_clusters(), content_type='application/json')
+#     elif requested_url.endswith('data/save_tree'):
+#         #logger.debug('got filter_gene_clusters fxn')
+#         return HttpResponse(bottleapp.save_tree(), content_type='application/json')
 ###############################################################    
     elif requested_url.startswith('data/contig/'):
         param = requested_url.split('/')[-1]
