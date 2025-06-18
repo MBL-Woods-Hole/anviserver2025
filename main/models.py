@@ -43,8 +43,12 @@ class Project(models.Model):
         #return os.path.join(settings.USER_DATA_DIR, self.user.username, self.secret)
         return os.path.join(settings.USER_DATA_DIR, self.user.username, self.name)
 
-    def get_file_path(self, filename, default=None, dont_check_exists=False):
-        full_path = os.path.join(self.get_path(), filename)
+    def get_file_path(self, endfilename, default=None, dont_check_exists=False):
+        path_to_this_pangenome = self.get_path()  # ~/data/pangenomes_homd/guest/Veillonella__tobetsuensis__HMT_421/
+        full_path = ''
+        for file in os.listdir(path_to_this_pangenome):
+            if file.endswith(endfilename):
+                full_path = os.path.join(path_to_this_pangenome, file)
         
         if dont_check_exists:
             return full_path
@@ -69,6 +73,7 @@ class Project(models.Model):
         #print('in main/Modesl.py::get_interactive::args',args)
         if self.get_file_path('PAN.db', default=None):
             args.mode = 'pan'
+            
             args.pan_db                 = self.get_file_path('PAN.db', dont_check_exists=True)
             args.genomes_storage        = self.get_file_path('GENOMES.db', default=None)
             args.skip_init_functions    = False
