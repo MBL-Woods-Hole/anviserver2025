@@ -52,7 +52,7 @@ class Project(models.Model):
         for file in os.listdir(path_to_this_pangenome):
             if file.endswith(endfilename):
                 full_path = os.path.join(path_to_this_pangenome, file)
-        
+        print('full path',full_path)
         if dont_check_exists:
             return full_path
 
