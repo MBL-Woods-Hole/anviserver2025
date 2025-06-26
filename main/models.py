@@ -44,8 +44,7 @@ class Project(models.Model):
         #AAV return os.path.join(settings.USER_DATA_DIR, self.user.username, self.secret)
         return os.path.join(settings.USER_DATA_DIR, self.user.username, self.name)
         
-
-    def get_file_path(self, endfilename, default=None, dont_check_exists=False):
+    def get_pg_file_path(self, endfilename, default=None, dont_check_exists=False):
         #AAV full_path = os.path.join(self.get_path(), filename)
         print('endfilename',endfilename)
         path_to_this_pangenome = self.get_path()  # ~/data/pangenomes_homd/guest/Veillonella__tobetsuensis__HMT_421/
@@ -53,6 +52,17 @@ class Project(models.Model):
         for file in os.listdir(path_to_this_pangenome):
             if file.endswith(endfilename):
                 full_path = os.path.join(path_to_this_pangenome, file)
+        
+        if dont_check_exists:
+            return full_path
+
+        if os.path.exists(full_path):
+            return full_path
+        
+        return default
+        
+    def get_file_path(self, filename, default=None, dont_check_exists=False):
+        full_path = os.path.join(self.get_path(), filename)
         
         if dont_check_exists:
             return full_path
@@ -79,9 +89,9 @@ class Project(models.Model):
         #AAV if self.get_file_path('pan.db', default=None):
             args.mode = 'pan'
             
-            args.pan_db                 = self.get_file_path('PAN.db', dont_check_exists=True)
+            args.pan_db                 = self.get_pg_file_path('PAN.db', dont_check_exists=True)
             #AAV args.pan_db                 = self.get_file_path('pan.db', dont_check_exists=True)
-            args.genomes_storage        = self.get_file_path('GENOMES.db', default=None)
+            args.genomes_storage        = self.get_pg_file_path('GENOMES.db', default=None)
             args.skip_init_functions    = False
             #AAV args.skip_init_functions    = True
         elif self.get_file_path('contigs.db', default=None):
