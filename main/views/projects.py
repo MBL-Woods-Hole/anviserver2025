@@ -160,6 +160,7 @@ def new_project(request):
                     put_project_file(project.get_path(), fileType, request.FILES[fileType])
             print('1a')
             interactive = project.get_interactive()
+            
             profile_db_path = project.get_file_path('profile.db', default=None)
 
             print('2')

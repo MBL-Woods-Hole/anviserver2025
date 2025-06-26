@@ -1,3 +1,4 @@
+
 from django.contrib.auth.models import Permission, User
 from django.utils.crypto import get_random_string
 from django.db import models
@@ -40,10 +41,13 @@ class Project(models.Model):
         return 'Project ' + str(self.name) + ' (Created By: ' + str(self.user) + ')'
 
     def get_path(self):
-        #return os.path.join(settings.USER_DATA_DIR, self.user.username, self.secret)
+        #AAV return os.path.join(settings.USER_DATA_DIR, self.user.username, self.secret)
         return os.path.join(settings.USER_DATA_DIR, self.user.username, self.name)
+        
 
     def get_file_path(self, endfilename, default=None, dont_check_exists=False):
+        #AAV full_path = os.path.join(self.get_path(), filename)
+        print('endfilename',endfilename)
         path_to_this_pangenome = self.get_path()  # ~/data/pangenomes_homd/guest/Veillonella__tobetsuensis__HMT_421/
         full_path = ''
         for file in os.listdir(path_to_this_pangenome):
@@ -72,11 +76,14 @@ class Project(models.Model):
         args.read_only = read_only
         #print('in main/Modesl.py::get_interactive::args',args)
         if self.get_file_path('PAN.db', default=None):
+        #AAV if self.get_file_path('pan.db', default=None):
             args.mode = 'pan'
             
             args.pan_db                 = self.get_file_path('PAN.db', dont_check_exists=True)
+            #AAV args.pan_db                 = self.get_file_path('pan.db', dont_check_exists=True)
             args.genomes_storage        = self.get_file_path('GENOMES.db', default=None)
             args.skip_init_functions    = False
+            #AAV args.skip_init_functions    = True
         elif self.get_file_path('contigs.db', default=None):
             args.hide_outlier_SNVs = False
             args.profile_db             = self.get_file_path('profile.db', dont_check_exists=True)
