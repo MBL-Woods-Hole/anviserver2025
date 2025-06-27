@@ -85,7 +85,7 @@ class Project(models.Model):
         args = argparse.Namespace()
         args.read_only = read_only
         #print('in main/Modesl.py::get_interactive::args',args)
-        if self.get_file_path('PAN.db', default=None):
+        if self.get_pg_file_path('PAN.db', default=None):
         #AAV if self.get_file_path('pan.db', default=None):
             args.mode = 'pan'
             
