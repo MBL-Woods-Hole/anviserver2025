@@ -103,8 +103,8 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
         interactive = project.get_interactive(read_only=read_only)
     #print('inter',interactive)
     #print('url1',requested_url)
-    print('bottle_req',bottle_request)
-    print('bottle_req.forms',bottle_request.forms)
+    #print('bottle_req',bottle_request)
+    #print('bottle_req.forms',bottle_request.forms)
     bottleapp = BottleApplication(interactive, bottle_request, bottle_response)
 
     if requested_url.startswith('data/init'):

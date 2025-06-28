@@ -166,6 +166,8 @@ killall gunicorn && gunicorn -c gunicorn.conf.py anviserver.wsgi:application --d
 anvio/summaryhtml.py
 anvio/data/interactive/js/utils.js
 anvio/data/interactive/index.html
+anvio/bottleroutes.py
+anvio/interactive.py
 
 # License
 

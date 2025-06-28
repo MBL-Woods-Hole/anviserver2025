@@ -46,13 +46,13 @@ class Project(models.Model):
         
     def get_pg_file_path(self, endfilename, default=None, dont_check_exists=False):
         #AAV full_path = os.path.join(self.get_path(), filename)
-        print('endfilename',endfilename)
+        #print('endfilename',endfilename)
         path_to_this_pangenome = self.get_path()  # ~/data/pangenomes_homd/guest/Veillonella__tobetsuensis__HMT_421/
         full_path = ''
         for file in os.listdir(path_to_this_pangenome):
             if file.endswith(endfilename):
                 full_path = os.path.join(path_to_this_pangenome, file)
-        print('full path',full_path)
+        #print('full path',full_path)
         if dont_check_exists:
             return full_path
 
