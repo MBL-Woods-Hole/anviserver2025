@@ -58,4 +58,10 @@ class MockBottleRequest():
 
         if django_request:
             for key in django_request.POST:
-                self.forms[key] = django_request.POST[key]
+                print('key',key)
+                if '[]' in key:
+                    self.forms[key] = django_request.POST.getlist(key)
+                else:
+                    self.forms[key] = django_request.POST[key]
+
+
