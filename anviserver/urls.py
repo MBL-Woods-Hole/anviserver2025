@@ -31,7 +31,9 @@ urlpatterns = [
     re_path(r'^teams', teams.list_teams, name="teams"),
 
     re_path(r'^p/(?P<short_link_key>\w+)', interactive.short_link_redirect, name='short_link_redirect'),
-    re_path(r'^ajax/(?P<username>\w+)/(?P<project_slug>\w+)/(?P<view_key>\w+)/(?P<requested_url>.*)', interactive.ajax_handler),
+    
+    re_path(r'ajax/(?P<username>\w+)/(?P<project_slug>\w+)/(?P<view_key>\w+)/(?P<requested_url>.*)', interactive.ajax_handler),
+    
     re_path(r'^(?P<username>\w+)/(?P<project_slug>\w+)/download', interactive.download_zip, name="download_zip"),
     re_path(r'^(?P<username>\w+)/(?P<project_slug>\w+)/(?P<inspection_type>\w+)', interactive.show_inspect, name="show_inspect"),
     re_path(r'^(?P<username>\w+)/(?P<project_slug>\w+)', interactive.show_interactive, name="show_interactive"),
