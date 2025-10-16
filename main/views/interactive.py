@@ -83,7 +83,7 @@ def download_zip(request, username, project_slug):
 
 
 def ajax_handler(request, username, project_slug, view_key, requested_url):
-    print('in ajax',request.is_ajax(),requested_url)
+    print('in ajax',request.is_ajax(),username, project_slug, view_key, requested_url)
     #if not request.is_ajax():
     #    raise Http404
 
