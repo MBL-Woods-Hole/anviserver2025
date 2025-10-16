@@ -7,3 +7,5 @@ main/static/interactive
 static/interactive/
 nginx.conf
 gunicorn.conf.py
+gunicorn_access.log
+gunicorn_error.log

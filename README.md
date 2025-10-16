@@ -127,7 +127,7 @@ Edit `nginx.conf` to,
 * If you want to *keep* HTTPS (as you should ;)), the paths mentioned in lines that start with `ssl_certificate` and `ssl_certificate_key` must resolve to the locations of your SSL certificate.
 * Find `location /static` and `location /static/interactive` directives and make sure they are pointing to correct directories on your disk under anvi'server and anvi'o locations.
 
-Finally, replace the system default config file for ngix with the file you just edited (the location of this file will differ from system to system):
+Finally, replace the system default config file for nginx with the file you just edited (the location of this file will differ from system to system):
 
 ```
 sudo cp nginx.conf /etc/nginx/sites-enabled/default
@@ -139,7 +139,7 @@ And start/restart ngix:
 sudo service nginx restart
 ```
 
-*Please note that the previous steps to update the config file for ngix and restart the server is tested for Ubuntu systems and require superuser permissions. We would be very happy to update them if you have a better way to do this.*
+*Please note that the previous steps to update the config file for nginx and restart the server is tested for Ubuntu systems and require superuser permissions. We would be very happy to update them if you have a better way to do this.*
 
 
 An important note, if there is a firewall on your system blocking port numbers `80` and/or `443`, you may need to update your rules first. This is how you could do it on an Ubuntu system:
