@@ -227,7 +227,7 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
         return ret
 ########### ADDED ###########################################
     elif requested_url.endswith('data/search_functions'):
-        logger.debug('got search fxn')
+        
         return HttpResponse(bottleapp.search_functions(), content_type='application/json')
     elif requested_url.endswith('data/news'):
         #logger.debug('got news fxn')
@@ -236,7 +236,7 @@ def ajax_handler(request, username, project_slug, view_key, requested_url):
         #logger.debug('got check_homogeneity_info fxn')
         return HttpResponse(bottleapp.check_homogeneity_info(), content_type='application/json')
     elif requested_url.endswith('data/filter_gene_clusters'):
-        logger.debug('got filter_gene_clusters fxn')
+        
         return HttpResponse(bottleapp.filter_gene_clusters(), content_type='application/json')
     elif requested_url.endswith('data/save_tree'):
         #logger.debug('got filter_gene_clusters fxn')
