@@ -74,7 +74,7 @@ function searchFunctions() {
     });
     // 1. Get the token
     var csrf_token = $('meta[name="csrf-token"]').attr('content');
-    console.log('csrf token',csrf_token)
+    //console.log('csrf token',csrf_token)
     $.ajax({
         type: 'POST',
         cache: false,
@@ -82,7 +82,8 @@ function searchFunctions() {
         data: {
             terms: $('#searchFunctionsValue').val(),
             sources: requested_sources,
-            _token: csrf_token
+            
+            csrfmiddlewaretoken: '{{ csrf_token }}'
         },
         success: function(data) {
             if (data['status'] == 0) {
