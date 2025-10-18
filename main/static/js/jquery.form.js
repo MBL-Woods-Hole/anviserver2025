@@ -500,6 +500,7 @@ $.fn.ajaxSubmit = function(options) {
         var csrf_token = $('meta[name=csrf-token]').attr('content');
         var csrf_param = $('meta[name=csrf-param]').attr('content');
         if (csrf_param && csrf_token) {
+            console.log('jq formattaching csrf token')
             s.extraData = s.extraData || {};
             s.extraData[csrf_param] = csrf_token;
         }
