@@ -72,14 +72,17 @@ function searchFunctions() {
     $('#functions_sources_list input:checkbox:checked').each((i, v) => {
         requested_sources.push($(v).val());
     });
-
+    // 1. Get the token
+    var csrf_token = $('meta[name="csrf-token"]').attr('content');
+    
     $.ajax({
         type: 'POST',
         cache: false,
         url: '/data/search_functions',
         data: {
             terms: $('#searchFunctionsValue').val(),
-            sources: requested_sources
+            sources: requested_sources,
+            _token: csrf_token
         },
         success: function(data) {
             if (data['status'] == 0) {
